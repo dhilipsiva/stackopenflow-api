@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "stackopenflow"
+version = "0.1.0"
+description = "StackOpenflow API (Python/Django backend) made for DjangoCon EU 2021"
+authors = ["dhilipsiva <dhilipsiva@pm.me>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.dev-dependencies]
+ipython = "^7.23.1"
+neovim = "^0.3.1"
+flake8 = "^3.9.1"
+isort = "^5.8.0"
+black = "^21.5b0"
+ipdb = "^0.13.7"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
