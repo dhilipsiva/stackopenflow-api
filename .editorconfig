@@ -4,17 +4,6 @@ root = true
 end_of_line = lf
 insert_final_newline = False
 
-[*.py]
-charset = utf-8
-ensure_newline_before_comments = True
-force_grid_wrap = 0
-include_trailing_comma = True
-indent_size = 4
-indent_style = space
-line_length = 88
-multi_line_output = 3
-use_parentheses = True
-
 [Makefile]
 indent_style = tab
 
@@ -22,10 +11,14 @@ indent_style = tab
 indent_size = 2
 indent_style = space
 
-[tool.isort]
+[*.py]
+# Make sure this matches `tool.isort` in pyproject.toml
+charset = utf-8
 ensure_newline_before_comments = True
 force_grid_wrap = 0
 include_trailing_comma = True
+indent_size = 4
+indent_style = space
 line_length = 88
 multi_line_output = 3
 use_parentheses = True
