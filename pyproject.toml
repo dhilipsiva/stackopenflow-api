@@ -8,6 +8,9 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.9"
 Django = "^3.2.2"
+graphene-django = "^2.15.0"
+celery = "^5.0.5"
+boto3 = "^1.17.74"
 
 [tool.poetry.dev-dependencies]
 ipython = "^7.23.1"
@@ -16,6 +19,24 @@ flake8 = "^3.9.1"
 isort = "^5.8.0"
 black = "^21.5b0"
 ipdb = "^0.13.7"
+
+[tool.black]
+line-length = 88
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | migrations
+)/
+'''
 
 [tool.isort]
 # Make sure this matches `*.py` in .editorconfig
