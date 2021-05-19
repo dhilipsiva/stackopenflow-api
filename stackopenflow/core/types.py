@@ -2,7 +2,7 @@ from graphene.types import ID, JSONString, ObjectType, String
 from graphene_django import DjangoObjectType
 
 from .models import Upload
-from .node import Node
+from .node import CustomNode
 from .storage import generate_presigned_post
 
 
@@ -21,8 +21,13 @@ class UploadType(DjangoObjectType):
 
     class Meta:
         model = Upload
-        interfaces = (Node,)
+        interfaces = (CustomNode,)
         convert_choices_to_enum = False
 
     def resolve_presigned_post_url(self, info):
         return generate_presigned_post(self.key)
+
+
+class SocialBeginUrlType(ObjectType):
+    path = String()
+    provider = String()

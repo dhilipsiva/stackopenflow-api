@@ -43,7 +43,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # 3rd party
+    "django_extensions",
     "graphene_django",
+    "social_django",
+    # stackopenflow
     "stackopenflow.core",
 ]
 
@@ -83,11 +87,14 @@ WSGI_APPLICATION = "stackopenflow.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env("DATABASE_NAME", default="stackopenflow"),
+        "USER": env("DATABASE_USER", default="stackopenflow"),
+        "PASSWORD": env("DATABASE_PASSWORD", default="stackopenflow"),
+        "HOST": env("DATABASE_HOST", default="0.0.0.0"),
+        "PORT": env("DATABASE_PORT", default="5432"),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -143,6 +150,7 @@ NODE_DIVIDER = "@"
 AUTH_USER_MODEL = "core.User"
 FRONTEND_CHOICES = "../stackopenflow-app/src/CHOICES.js"
 
+SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 GRAPHENE = {
     "SCHEMA": "stackopenflow.graphql.schema",
     "SCHEMA_OUTPUT": "../stackopenflow-app/schema.json",
@@ -158,9 +166,21 @@ GRAPHENE = {
 #     # 'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
 # }
 AUTHENTICATION_BACKENDS = [
+    # Mase sure SOCIAL_PROVIDERS has social backend :down:
+    "social_core.backends.github.GithubOAuth2",
+    # "social_core.backends.twitter.TwitterOAuth",
     # "graphql_jwt.backends.JSONWebTokenBackend",
     "django.contrib.auth.backends.ModelBackend",
 ]
+
+SOCIAL_PROVIDERS = [
+    # should be included in AUTHENTICATION_BACKENDS :top:
+    "github",
+    # "twitter",
+]
+
+# SOCIAL_AUTH_TWITTER_KEY = env("SOCIAL_AUTH_TWITTER_KEY")
+# SOCIAL_AUTH_TWITTER_SECRET = env("SOCIAL_AUTH_TWITTER_SECRET")
 
 AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID", "minioadmin")
 AWS_BUCKET_NAME = env("AWS_BUCKET_NAME", "backend-local")

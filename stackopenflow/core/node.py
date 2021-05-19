@@ -1,11 +1,11 @@
 from django.conf import settings
-from graphene.relay import Node as _Node
+from graphene.relay import Node
 
 
-class Node(_Node):
+class CustomNode(Node):
     @staticmethod
     def gid2id(gid):
-        return Node.from_global_id(gid)[1]
+        return CustomNode.from_global_id(gid)[1]
 
     @staticmethod
     def from_global_id(gid):

@@ -1,11 +1,12 @@
 from celery import current_app
 from graphene import Field
 from graphene.relay import ClientIDMutation
+from graphql_social_auth.relay import SocialAuthJWT
 
 from .choices import UploadStatus
 from .inputs import CreateUploadInput, IDInput, UpdateMeInput
 from .models import Upload, User
-from .node import Node
+from .node import CustomNode
 from .types import MeType, UploadType
 
 
@@ -25,7 +26,7 @@ class FinishUpload(ClientIDMutation):
 
     @staticmethod
     def mutate_and_get_payload(root, info, **input):
-        upload = Upload.objects.get(id=Node.gid2id(input.get("id")))
+        upload = Upload.objects.get(id=CustomNode.gid2id(input.get("id")))
         upload.status = UploadStatus.UPLOADED
         upload.save()
         current_app.send_task("stackopenflow.core.tasks.process_upload", (upload.id,))
@@ -45,6 +46,7 @@ class UpdateMe(ClientIDMutation):
 
 class Mutations:
     create_upload = CreateUpload.Field()
-    node = Node.Field()
-    update_me = UpdateMe.Field()
     finish_upload = FinishUpload.Field()
+    node = CustomNode.Field()
+    social_auth = SocialAuthJWT.Field()
+    update_me = UpdateMe.Field()
