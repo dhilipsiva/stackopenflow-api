@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     # 3rd party
     "django_extensions",
     "graphene_django",
-    "social_django",
     # stackopenflow
     "stackopenflow.core",
 ]
@@ -55,7 +54,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    # "django.middleware.csrf.CsrfViewMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -150,39 +149,24 @@ NODE_DIVIDER = "@"
 AUTH_USER_MODEL = "core.User"
 FRONTEND_CHOICES = "../stackopenflow-app/src/CHOICES.js"
 
-SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 GRAPHENE = {
     "SCHEMA": "stackopenflow.graphql.schema",
     "SCHEMA_OUTPUT": "../stackopenflow-app/schema.json",
-    # "MIDDLEWARE": [
-    #     "graphql_jwt.middleware.JSONWebTokenMiddleware",
-    #     # 'graphene_django.debug.DjangoDebugMiddleware',
-    # ],
+    "MIDDLEWARE": [
+        "graphql_jwt.middleware.JSONWebTokenMiddleware",
+        "graphene_django.debug.DjangoDebugMiddleware",
+    ],
 }
-# GRAPHQL_JWT = {
-#     "JWT_VERIFY_EXPIRATION": False,
-#     # uncomment below lines for enabling time-bound sessions
-#     # 'JWT_EXPIRATION_DELTA': timedelta(minutes=60),
-#     # 'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
-# }
+GRAPHQL_JWT = {
+    "JWT_VERIFY_EXPIRATION": False,
+    # uncomment below lines for enabling time-bound sessions
+    # 'JWT_EXPIRATION_DELTA': timedelta(minutes=60),
+    # 'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
+}
 AUTHENTICATION_BACKENDS = [
-    # Mase sure SOCIAL_PROVIDERS has social backend :down:
-    "social_core.backends.github.GithubOAuth2",
-    # "social_core.backends.twitter.TwitterOAuth",
-    # "graphql_jwt.backends.JSONWebTokenBackend",
+    "graphql_jwt.backends.JSONWebTokenBackend",
     "django.contrib.auth.backends.ModelBackend",
 ]
-
-SOCIAL_PROVIDERS = [
-    # should be included in AUTHENTICATION_BACKENDS :top:
-    "github",
-    # "twitter",
-]
-
-# SOCIAL_AUTH_TWITTER_KEY = env("SOCIAL_AUTH_TWITTER_KEY")
-# SOCIAL_AUTH_TWITTER_SECRET = env("SOCIAL_AUTH_TWITTER_SECRET")
-SOCIAL_AUTH_GITHUB_KEY = env("SOCIAL_AUTH_GITHUB_KEY")
-SOCIAL_AUTH_GITHUB_SECRET = env("SOCIAL_AUTH_GITHUB_SECRET")
 
 AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID", "minioadmin")
 AWS_BUCKET_NAME = env("AWS_BUCKET_NAME", "backend-local")

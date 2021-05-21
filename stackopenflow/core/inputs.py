@@ -16,3 +16,8 @@ class UpdateMeInput:
     last_name = String(required=True)
     phone = String(required=True)
     email = String(required=True)
+
+
+class RegisterInput:
+    password = String(required=True)
+    username = String(required=True)

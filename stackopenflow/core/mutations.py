@@ -1,13 +1,29 @@
 from celery import current_app
 from graphene import Field
 from graphene.relay import ClientIDMutation
-from graphql_social_auth.relay import SocialAuthJWT
+from graphql_jwt.relay import DeleteJSONWebTokenCookie, ObtainJSONWebToken, Verify
 
 from .choices import UploadStatus
-from .inputs import CreateUploadInput, IDInput, UpdateMeInput
+from .decorators import login_required
+from .inputs import CreateUploadInput, IDInput, RegisterInput, UpdateMeInput
 from .models import Upload, User
-from .node import CustomNode
-from .types import MeType, UploadType
+from .node import Node
+from .types import UploadType, UserType
+
+
+class Register(ClientIDMutation):
+    user = Field(UserType)
+    Input = RegisterInput
+
+    @staticmethod
+    def mutate_and_get_payload(root, info, **input):
+        username = input.get("username")
+        password = input.get("password")
+        email = f"{username}@stackopenflow.space"
+        user = User.objects.create(username=username, email=email)
+        user.set_password(password)
+        user.save()
+        return Register(user=user)
 
 
 class CreateUpload(ClientIDMutation):
@@ -15,6 +31,7 @@ class CreateUpload(ClientIDMutation):
     upload = Field(UploadType)
 
     @staticmethod
+    @login_required
     def mutate_and_get_payload(root, info, **input):
         upload = Upload.objects.create(user=info.context.user, **input)
         return CreateUpload(upload=upload)
@@ -25,8 +42,9 @@ class FinishUpload(ClientIDMutation):
     upload = Field(UploadType)
 
     @staticmethod
+    @login_required
     def mutate_and_get_payload(root, info, **input):
-        upload = Upload.objects.get(id=CustomNode.gid2id(input.get("id")))
+        upload = Upload.objects.get(id=Node.gid2id(input.get("id")))
         upload.status = UploadStatus.UPLOADED
         upload.save()
         current_app.send_task("stackopenflow.core.tasks.process_upload", (upload.id,))
@@ -35,9 +53,10 @@ class FinishUpload(ClientIDMutation):
 
 class UpdateMe(ClientIDMutation):
     Input = UpdateMeInput
-    me = Field(MeType)
+    me = Field(UserType)
 
     @staticmethod
+    @login_required
     def mutate_and_get_payload(root, info, **input):
         User.objects.filter(id=info.context.user.id).update(**input)
         me = User.objects.get(id=info.context.user.id)
@@ -47,6 +66,9 @@ class UpdateMe(ClientIDMutation):
 class Mutations:
     create_upload = CreateUpload.Field()
     finish_upload = FinishUpload.Field()
-    node = CustomNode.Field()
-    social_auth = SocialAuthJWT.Field()
+    login = ObtainJSONWebToken.Field()
+    logout = DeleteJSONWebTokenCookie.Field()
+    node = Node.Field()
+    register = Register.Field()
     update_me = UpdateMe.Field()
+    verify_token = Verify.Field()
