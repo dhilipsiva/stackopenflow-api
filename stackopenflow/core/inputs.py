@@ -14,7 +14,6 @@ class CreateUploadInput:
 class UpdateMeInput:
     first_name = String(required=True)
     last_name = String(required=True)
-    phone = String(required=True)
     email = String(required=True)
 
 

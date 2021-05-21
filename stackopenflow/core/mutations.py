@@ -1,7 +1,7 @@
 from celery import current_app
 from graphene import Field
 from graphene.relay import ClientIDMutation
-from graphql_jwt.relay import DeleteJSONWebTokenCookie, ObtainJSONWebToken, Verify
+from graphql_jwt.relay import DeleteJSONWebTokenCookie, ObtainJSONWebToken
 
 from .choices import UploadStatus
 from .decorators import login_required
@@ -71,4 +71,3 @@ class Mutations:
     node = Node.Field()
     register = Register.Field()
     update_me = UpdateMe.Field()
-    verify_token = Verify.Field()
