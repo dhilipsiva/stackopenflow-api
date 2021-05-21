@@ -31,6 +31,9 @@ class BaseModel(Model):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return f"{self.id}"
+
 
 class User(AbstractUser, BaseModel):
     kind = PSIF(choices=UserKind.choices, default=UserKind.CLIENT)
@@ -47,6 +50,9 @@ class User(AbstractUser, BaseModel):
     def validate_verify_token(self, digest):
         return hmac.compare_digest(digest, self.get_verify_token())
 
+    def __str__(self):
+        return f"{self.username}"
+
 
 class Upload(BaseModel):
     error_message = TextField(null=True, blank=True)
@@ -60,3 +66,6 @@ class Upload(BaseModel):
     def key(self):
         """storage bucket key / object path"""
         return f"uploads/{self.kind}/{self.id}"
+
+    def __str__(self):
+        return f"[{self.user}] {self.filename}"

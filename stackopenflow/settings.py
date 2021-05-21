@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "graphene_django",
     # stackopenflow
     "stackopenflow.core",
+    "stackopenflow.qna",
 ]
 
 MIDDLEWARE = [

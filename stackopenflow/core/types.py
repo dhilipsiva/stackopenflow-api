@@ -1,3 +1,4 @@
+from django.contrib.contenttypes.models import ContentType
 from graphene.types import ID, Int, JSONString, ObjectType, String
 from graphene_django import DjangoObjectType
 
@@ -26,6 +27,6 @@ class UploadType(DjangoObjectType):
         return generate_presigned_post(self.key)
 
 
-class SocialBeginUrlType(ObjectType):
-    path = String()
-    provider = String()
+class ContentTypeType(DjangoObjectType):
+    class Meta:
+        model = ContentType

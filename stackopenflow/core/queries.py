@@ -1,17 +1,22 @@
+from django.contrib.contenttypes.models import ContentType
 from graphene import ID, Field, List
 from graphene_django.debug import DjangoDebug
 
 from .decorators import login_required
 from .models import Upload
 from .node import Node
-from .types import UploadType, UserType
+from .types import ContentTypeType, UploadType, UserType
 
 
 class Queries(object):
+    content_types = Field(List(ContentTypeType))
     debug = Field(DjangoDebug, name="_debug")
     me = Field(UserType)
     upload = Field(UploadType, id=ID(required=True))
     uploads = Field(List(UploadType))
+
+    def resolve_content_types(self, info):
+        return ContentType.objects.all()
 
     @login_required
     def resolve_upload(self, info, id):
