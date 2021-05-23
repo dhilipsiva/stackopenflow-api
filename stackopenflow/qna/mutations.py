@@ -1,6 +1,7 @@
 from graphene import Field, ID
 from graphene.relay import ClientIDMutation
 
+from stackopenflow.core.node import Node
 from stackopenflow.core.decorators import login_required
 
 from .inputs import AnswerInput, CommentInput, QuestionInput, VoteInput
@@ -93,9 +94,19 @@ class ApplyVote(ClientIDMutation):
     @staticmethod
     @login_required
     def mutate_and_get_payload(root, info, **input):
-        id = input.get("id")
-        Vote.objects.filter(id=id).update(**input)
-        vote = Vote.objects.get(id=id)
+        object_id = Node.gid2id(input.get("object_id"))
+        content_type_id = input.get("content_type_id")
+        kind = input.get("kind")
+        filter = {
+            "object_id": object_id,
+            "content_type_id": content_type_id,
+            "user": info.context.user,
+        }
+        if Vote.objects.filter(**filter).exists():
+            Vote.objects.filter(id=id).update(kind=kind)
+            vote = Vote.objects.get(id=id)
+        else:
+            vote = Vote.objects.create(**filter, kind=kind)
         return ApplyVote(vote=vote)
 
 

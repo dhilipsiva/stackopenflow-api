@@ -1,17 +1,15 @@
 from django.contrib.contenttypes.models import ContentType
-from graphene.types import ID, Int, JSONString, ObjectType, String
+from graphene.types import JSONString
 from graphene_django import DjangoObjectType
 
-from .models import Upload
+from .models import Upload, User
 from .node import Node
 from .storage import generate_presigned_post
 
 
-class UserType(ObjectType):
-    id = ID()
-    email = String()
-    username = String()
-    kind = Int()
+class UserType(DjangoObjectType):
+    class Meta:
+        model = User
 
 
 class UploadType(DjangoObjectType):
