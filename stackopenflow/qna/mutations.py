@@ -42,6 +42,7 @@ class CreateComment(ClientIDMutation):
     @staticmethod
     @login_required
     def mutate_and_get_payload(root, info, **input):
+        input["object_id"] = Node.gid2id(input["object_id"])
         comment = Comment.objects.create(user=info.context.user, **input)
         return CreateComment(comment=comment)
 

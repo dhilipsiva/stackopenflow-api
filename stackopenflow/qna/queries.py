@@ -26,6 +26,7 @@ class Queries(object):
 
     @login_required
     def resolve_comments(self, info, object_id, content_type_id):
+        object_id = Node.gid2id(object_id)
         return Comment.objects.filter(
             object_id=object_id, content_type_id=content_type_id
         ).with_vote_count()
