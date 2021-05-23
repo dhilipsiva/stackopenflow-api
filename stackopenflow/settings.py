@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     # stackopenflow apps
     "stackopenflow.core",
     "stackopenflow.qna",
+    "stackopenflow.contrib",
 ]
 
 MIDDLEWARE = [
@@ -150,7 +151,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_METHODS = ["GET", "POST", "OPTION"]
 NODE_DIVIDER = "@"
 AUTH_USER_MODEL = "core.User"
-FRONTEND_CHOICES = "../stackopenflow-app/src/CHOICES.js"
+APP_CHOICES_JS = "../stackopenflow-app/src/CHOICES.js"
 
 GRAPHENE = {
     "SCHEMA": "stackopenflow.graphql.schema",

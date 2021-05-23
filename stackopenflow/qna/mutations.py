@@ -16,6 +16,7 @@ class CreateAnswer(ClientIDMutation):
     @staticmethod
     @login_required
     def mutate_and_get_payload(root, info, **input):
+        input["question_id"] = Node.gid2id(input["question_id"])
         answer = Answer.objects.create(user=info.context.user, **input)
         return CreateAnswer(answer=answer)
 
