@@ -9,8 +9,8 @@ class Node(_Node):
 
     @staticmethod
     def from_global_id(gid):
-        return gid.split(settings.DIVIDER, 1)
+        return gid.split(settings.NODE_DIVIDER, 1)
 
     @staticmethod
     def to_global_id(type, id):
-        return f"{type}{settings.DIVIDER}{id}"
+        return f"{type}{settings.NODE_DIVIDER}{id}"

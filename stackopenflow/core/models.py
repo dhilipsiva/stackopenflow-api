@@ -65,7 +65,7 @@ class Upload(BaseModel):
     @property
     def key(self):
         """storage bucket key / object path"""
-        return f"uploads/{self.kind}/{self.id}"
+        return f"{settings.UPLOADS_PREFIX}/{self.kind}/{self.id}"
 
     def __str__(self):
         return f"[{self.user}] {self.filename}"

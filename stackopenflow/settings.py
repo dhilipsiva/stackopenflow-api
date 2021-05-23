@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     # 3rd party
     "django_extensions",
     "graphene_django",
-    # stackopenflow
+    "corsheaders",
+    # stackopenflow apps
     "stackopenflow.core",
     "stackopenflow.qna",
 ]
@@ -54,8 +55,9 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
+    # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -145,7 +147,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # =====================================================================================
 # Custom Settings
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_METHODS = ["GET", "POST"]
+CORS_ALLOW_METHODS = ["GET", "POST", "OPTION"]
 NODE_DIVIDER = "@"
 AUTH_USER_MODEL = "core.User"
 FRONTEND_CHOICES = "../stackopenflow-app/src/CHOICES.js"
@@ -178,3 +180,6 @@ AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY", "minioadmin")
 AWS_REGION = "eu-west-1"
 
 UPLOADS_PREFIX = "uploads"
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
