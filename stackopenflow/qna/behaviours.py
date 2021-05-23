@@ -6,10 +6,7 @@ from .choices import VoteKind
 
 def vote_count(vote_kind):
     """CASE/WHEN statement to count up/down votes"""
-    return Count(
-        Case(When(votes__kind=vote_kind, then=1), output_field=IntegerField()),
-        distinct=True,
-    )
+    return Count(Case(When(votes__kind=vote_kind, then=1), output_field=IntegerField()))
 
 
 class VotableQuerySet(QuerySet):
@@ -29,7 +26,7 @@ class VotableObjectType:
 
 class CommentableQuerySet(VotableQuerySet):
     def with_comment_count(self):
-        return self.annotate(comment_count=Count("comments", distinct=True))
+        return self.annotate(comment_count=Count("comments"))
 
 
 class CommentableObjectType(VotableObjectType):

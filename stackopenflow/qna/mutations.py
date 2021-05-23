@@ -105,8 +105,8 @@ class ApplyVote(ClientIDMutation):
             "user": info.context.user,
         }
         if Vote.objects.filter(**filter).exists():
-            Vote.objects.filter(id=id).update(kind=kind)
-            vote = Vote.objects.get(id=id)
+            Vote.objects.filter(**filter).update(kind=kind)
+            vote = Vote.objects.filter(**filter).get()
         else:
             vote = Vote.objects.create(**filter, kind=kind)
         return ApplyVote(vote=vote)
